@@ -4,13 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.subtrack.R
 import com.example.subtrack.SubTrackApplication
 import com.example.subtrack.databinding.ActivityMainBinding
 import com.example.subtrack.ui.adapter.SubscriptionAdapter
 import com.example.subtrack.ui.viewmodel.SubscriptionViewModel
 import com.example.subtrack.ui.viewmodel.SubscriptionViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
@@ -29,6 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         setupRecyclerView()
         setupClickListeners()
+        setupSwipeToDelete()
         observeData()
     }
 
@@ -60,5 +64,42 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupSwipeToDelete() {
+        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
+            0,
+            ItemTouchHelper.LEFT
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
 
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val subscriptionToDelete = adapter.currentList[position]
+                    viewModel.delete(subscriptionToDelete)
+
+                    Snackbar.make(
+                        binding.root,
+                        "${subscriptionToDelete.name} silindi",
+                        Snackbar.LENGTH_LONG
+                    )
+                        .setAction("GERİ AL") {
+                            viewModel.insert(subscriptionToDelete)
+                        }
+                        .setBackgroundTint(getColor(R.color.primary_dark))
+                        .setActionTextColor(getColor(R.color.accent_pink))
+                        .show()
+                }
+
+
+            }
+        }
+
+        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(binding.rv)
+    }
 }
