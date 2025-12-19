@@ -2,6 +2,7 @@ package com.example.subtrack.ui.view
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.subtrack.SubTrackApplication
@@ -21,6 +22,7 @@ class AddSubscriptionActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityAddSubscriptionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -36,6 +38,11 @@ class AddSubscriptionActivity : AppCompatActivity() {
 
         if (name.isEmpty() || priceStr.isEmpty() || paymentDayStr.isEmpty()) {
             Toast.makeText(this, "Lütfen tüm alanları doldurun", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (paymentDayStr >= 32.toString() || paymentDayStr <= 0.toString()) {
+            Toast.makeText(this, "Lütfen geçerli bir ödeme günü girin", Toast.LENGTH_SHORT).show()
             return
         }
 

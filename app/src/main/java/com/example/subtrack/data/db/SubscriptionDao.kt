@@ -23,4 +23,7 @@ interface SubscriptionDao {
     @Query("SELECT SUM(price) FROM subscription_table")
     fun getTotalMonthlyCost(): Flow<Double?>
 
+    @Query("SELECT * FROM subscription_table")
+    suspend fun getAllSubscriptionsOneShot(): List<Subscription>
+
 }

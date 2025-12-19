@@ -67,4 +67,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
     implementation("androidx.fragment:fragment-ktx:1.6.0") // viewModels()
+
+    // WorkManager (Arka plan)
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
 }
