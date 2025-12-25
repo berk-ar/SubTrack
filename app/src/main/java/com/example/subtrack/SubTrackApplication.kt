@@ -2,6 +2,8 @@ package com.example.subtrack
 
 import android.app.Application
 import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.subtrack.data.db.SubTrackDatabase
@@ -24,8 +26,16 @@ class SubTrackApplication : Application() {
 
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
             "DailySubscriptionCheck",
-            ExistingPeriodicWorkPolicy.KEEP,    // KEEP: zaten varsa yenisini eklemez
+            ExistingPeriodicWorkPolicy.KEEP,
             workRequest
         )
+
+        /*
+        // Test için hemen bildirim gönderme işlemi
+        val workRequest = OneTimeWorkRequestBuilder<NotificationWorker>()
+            .build()
+
+        WorkManager.getInstance(this).enqueue(workRequest)
+        */
     }
 }

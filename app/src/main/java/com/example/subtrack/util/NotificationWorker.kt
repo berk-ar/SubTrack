@@ -4,6 +4,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
@@ -31,6 +32,7 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) :
             }
             Result.success()
         } catch (e: Exception) {
+            Log.e("NotificationWorker", "Hata oluştu", e)
             Result.failure()
         }
     }
@@ -51,15 +53,16 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) :
             )
             notificationManager.createNotificationChannel(channel)
 
-            val notification = NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle("Yarın ödeme var!")
-                .setContentText("$name için ₺$price ödeme yapmalısın.")
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setAutoCancel(true)
-                .build()
-
-            notificationManager.notify(notificationId, notification)
         }
+
+        val notification = NotificationCompat.Builder(context, channelId)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentTitle("Yarın ödeme var!")
+            .setContentText("$name için ₺$price ödeme yapmalısın.")
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
+            .build()
+
+        notificationManager.notify(notificationId, notification)
     }
 }

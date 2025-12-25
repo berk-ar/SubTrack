@@ -22,7 +22,6 @@ class AddSubscriptionActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         binding = ActivityAddSubscriptionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
